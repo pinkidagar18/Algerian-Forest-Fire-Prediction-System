@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FWI Calculator | Forest Fire Risk Assessment Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --flame-coral: #FF6B6B;
+            --sunset-orange: #FFB347;
+            --forest-green: #2D5016;
+            --deep-earth: #1A1A1D;
+            --smoke-gray: #6E7C7C;
+            --ash-white: #F8F9FA;
+            --ember-red: #E63946;
+            --golden-hour: #FFC857;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(165deg, #1A1A1D 0%, #2D3142 50%, #1A1A1D 100%);
+            color: var(--ash-white);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--flame-coral);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            gap: 8px;
+        }
+
+        .back-link:hover {
+            color: var(--sunset-orange);
+            transform: translateX(-4px);
+        }
+
+        h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #FF6B6B 0%, #FFB347 50%, #FFC857 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: rgba(248, 249, 250, 0.7);
+            font-weight: 400;
+        }
+
+        /* Info Banner */
+        .info-banner {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.08) 0%, rgba(255, 179, 71, 0.05) 100%);
+            border: 1px solid rgba(255, 107, 107, 0.25);
+            border-left: 4px solid var(--flame-coral);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 50px;
+            animation: slideUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .info-banner h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.8rem;
+            color: var(--sunset-orange);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .info-banner p {
+            color: rgba(248, 249, 250, 0.75);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            border-radius: 28px;
+            padding: 48px 40px;
+            margin-bottom: 50px;
+            animation: slideUp 0.8s ease-out 0.4s backwards;
+        }
+
+        .form-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2rem;
+            color: var(--ash-white);
+            margin-bottom: 36px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(255, 107, 107, 0.2);
+            font-weight: 700;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--ash-white);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 107, 107, 0.25);
+            border-radius: 14px;
+            color: var(--ash-white);
+            font-size: 1.05rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--flame-coral);
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+        }
+
+        .input-group input::placeholder {
+            color: rgba(248, 249, 250, 0.3);
+        }
+
+        .input-description {
+            font-size: 0.85rem;
+            color: rgba(248, 249, 250, 0.5);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* Select Styling */
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23FF6B6B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 48px;
+        }
+
+        select option {
+            background: var(--deep-earth);
+            color: var(--ash-white);
+            padding: 12px;
+        }
+
+        /* Submit Button */
+        .submit-button {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--flame-coral) 0%, var(--ember-red) 100%);
+            border: none;
+            border-radius: 14px;
+            color: white;
+            font-size: 1.15rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 12px 40px rgba(255, 107, 107, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-button::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--ember-red) 0%, var(--flame-coral) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .submit-button:hover::before {
+            opacity: 1;
+        }
+
+        .submit-button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 50px rgba(255, 107, 107, 0.4);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        /* Results Section */
+        .results-section {
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.12) 0%, rgba(230, 57, 70, 0.08) 100%);
+            border: 2px solid var(--flame-coral);
+            border-radius: 24px;
+            padding: 48px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .result-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2rem;
+            color: var(--sunset-orange);
+            margin-bottom: 28px;
+            font-weight: 700;
+        }
+
+        .fwi-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .fwi-label {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--ash-white);
+        }
+
+        .fwi-score {
+            font-family: 'Crimson Pro', serif;
+            font-size: 5.5rem;
+            font-weight: 700;
+            color: var(--flame-coral);
+            text-shadow: 0 0 40px rgba(255, 107, 107, 0.5);
+            animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            line-height: 1;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* FWI Scale */
+        .scale-container {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            border-radius: 24px;
+            padding: 40px;
+            animation: slideUp 0.8s ease-out 0.3s backwards;
+        }
+
+        .scale-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.8rem;
+            color: var(--ash-white);
+            margin-bottom: 32px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .scale-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .scale-item {
+            padding: 28px 20px;
+            text-align: center;
+            font-weight: 600;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .scale-item:hover {
+            transform: translateY(-4px);
+        }
+
+        .scale-range {
+            display: block;
+            font-size: 1.15rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .scale-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        /* Scale Colors */
+        .scale-very-low {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .scale-low {
+            background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
+            color: white;
+        }
+
+        .scale-moderate {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #1f2937;
+        }
+
+        .scale-high {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+        }
+
+        .scale-very-high {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .scale-extreme {
+            background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
+            color: white;
+        }
+
+        .scale-active {
+            transform: scale(1.08);
+            border: 3px solid white;
+            box-shadow: 0 12px 40px rgba(255, 107, 107, 0.6);
+            z-index: 10;
+            animation: scaleHighlight 0.5s ease-out;
+        }
+
+        @keyframes scaleHighlight {
+            0%, 100% { transform: scale(1.08); }
+            50% { transform: scale(1.12); }
+        }
+
+        /* Alert Messages */
+        .alert {
+            background: rgba(251, 191, 36, 0.15);
+            border: 2px solid #fbbf24;
+            border-left: 6px solid #fbbf24;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 40px;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .alert h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.8rem;
+            color: #fbbf24;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .alert p {
+            color: rgba(248, 249, 250, 0.9);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 32px 24px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .fwi-score {
+                font-size: 4.5rem;
+            }
+
+            .scale-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .result-card {
+                padding: 32px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <a href="{{ url_for('index') }}" class="back-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to Home
+            </a>
+            <h1>🔥 Fire Weather Index Calculator</h1>
+            <p class="subtitle">Enter meteorological data for accurate fire risk prediction</p>
+        </header>
+
+        <!-- Info Banner -->
+        <div class="info-banner">
+            <h2>Understanding FWI Predictions</h2>
+            <p>
+                The Fire Weather Index (FWI) is a numerical rating system that indicates the potential 
+                intensity of a forest fire. Our machine learning model analyzes weather conditions and 
+                fuel moisture codes to calculate risk levels. Higher FWI values represent greater fire danger.
+            </p>
+        </div>
+
+        <!-- Prediction Form -->
+        <div class="form-container">
+            <h2 class="form-title">Input Meteorological Parameters</h2>
+            
+            <form action="{{ url_for('predict_datapoint') }}" method="post">
+                <div class="form-grid">
+                    <!-- Temperature -->
+                    <div class="input-group">
+                        <label for="Temperature">
+                            <span>🌡️</span>
+                            Temperature
+                        </label>
+                        <input 
+                            type="number" 
+                            step="any" 
+                            min="0" 
+                            id="Temperature" 
+                            name="Temperature" 
+                            placeholder="29.5" 
+                            required>
+                        <p class="input-description">Daily maximum air temperature in °C</p>
+                    </div>
+
+                    <!-- Relative Humidity -->
+                    <div class="input-group">
+                        <label for="RH">
+                            <span>💧</span>
+                            Relative Humidity
+                        </label>
+                        <input 
+                            type="number" 
+                            step="any" 
+                            min="0" 
+                            max="100" 
+                            id="RH" 
+                            name="RH" 
+                            placeholder="55.0" 
+                            required>
+                        <p class="input-description">Noon relative humidity in %</p>
+                    </div>
+
+                    <!-- Wind Speed -->
+                    <div class="input-group">
+                        <label for="Ws">
+                            <span>💨</span>
+                            Wind Speed
+                        </label>
+                        <input 
+                            type="number" 
+                            step="any" 
+                            min="0" 
+                            id="Ws" 
+                            name="Ws" 
+                            placeholder="14.0" 
+                            required>
+                        <p class="input-description">Noon wind speed in km/h</p>
+                    </div>
+
+                    <!-- Rainfall -->
+                    <div class="input-group">
+                        <label for="Rain">
+                            <span>🌧️</span>
+                            Rainfall
+                        </label>
+                        <input 
+                            type="number" 
+                            step="any" 
+                            min="0" 
+                            id="Rain" 
+                            name="Rain" 
+                            placeholder="0.0" 
+                            required>
+                        <p class="input-description">24-hour accumulated rainfall in mm</p>
+                    </div>
+
+                    <!-- FFMC -->
+                    <div class="input-group">
+                        <label for="FFMC">
+                            <span>🍂</span>
+                            FFMC
+                        </label>
+                        <input 
+                            type="number" 
+                            step="any" 
+                            min="0" 
+                            id="FFMC" 
+                            name="FFMC" 
+                            placeholder="85.1" 
+                            required>
+                        <p class="input-description">Fine Fuel Moisture Code</p>
+                    </div>
+
+                    <!-- DMC -->
+                    <div class="input-group">
+                        <label for="DMC">
+                            <span>🌿</span>
+                            DMC
+                        </label>
+                        <input 
+                            type="number" 
+                            step="any" 
+                            min="0" 
+                            id="DMC" 
+                            name="DMC" 
+                            placeholder="18.3" 
+                            required>
+                        <p class="input-description">Duff Moisture Code</p>
+                    </div>
+
+                    <!-- ISI -->
+                    <div class="input-group">
+                        <label for="ISI">
+                            <span>⚡</span>
+                            ISI
+                        </label>
+                        <input 
+                            type="number" 
+                            step="any" 
+                            min="0" 
+                            id="ISI" 
+                            name="ISI" 
+                            placeholder="6.5" 
+                            required>
+                        <p class="input-description">Initial Spread Index</p>
+                    </div>
+
+                    <!-- Classes (NEW FIELD) -->
+                    <div class="input-group">
+                        <label for="Classes">
+                            <span>🔥</span>
+                            Fire Status
+                        </label>
+                        <select id="Classes" name="Classes" required>
+                            <option value="" disabled selected>Select fire status</option>
+                            <option value="0">Not Fire (0)</option>
+                            <option value="1">Fire (1)</option>
+                        </select>
+                        <p class="input-description">Current or historical fire condition</p>
+                    </div>
+
+                    <!-- Region -->
+                    <div class="input-group">
+                        <label for="Region">
+                            <span>📍</span>
+                            Region
+                        </label>
+                        <select id="Region" name="Region" required>
+                            <option value="" disabled selected>Select region</option>
+                            <option value="0">Bejaia Region (0)</option>
+                            <option value="1">Sidi Bel-Abbès Region (1)</option>
+                        </select>
+                        <p class="input-description">Geographic region of Algeria</p>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-button">
+                    <span>Calculate Fire Weather Index</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Results Section -->
+        {% if fwi_result is not none %}
+        <div class="results-section">
+            <div class="result-card">
+                <h2 class="result-title">🎯 Prediction Result</h2>
+                <div class="fwi-display">
+                    <span class="fwi-label">FWI Score:</span>
+                    <span class="fwi-score" id="fwi-score">{{ fwi_result | float | default(0) | round(2) }}</span>
+                </div>
+            </div>
+            
+            <div class="scale-container">
+                <h3 class="scale-title">Fire Weather Index Interpretation</h3>
+                <div class="scale-grid">
+                    <div class="scale-item scale-very-low" data-min="0" data-max="5.19">
+                        <span class="scale-range">0 - 5.2</span>
+                        <span class="scale-label">Very Low</span>
+                    </div>
+                    
+                    <div class="scale-item scale-low" data-min="5.2" data-max="11.19">
+                        <span class="scale-range">5.2 - 11.2</span>
+                        <span class="scale-label">Low</span>
+                    </div>
+
+                    <div class="scale-item scale-moderate" data-min="11.2" data-max="21.29">
+                        <span class="scale-range">11.2 - 21.3</span>
+                        <span class="scale-label">Moderate</span>
+                    </div>
+
+                    <div class="scale-item scale-high" data-min="21.3" data-max="37.99">
+                        <span class="scale-range">21.3 - 38.0</span>
+                        <span class="scale-label">High</span>
+                    </div>
+
+                    <div class="scale-item scale-very-high" data-min="38.0" data-max="49.99">
+                        <span class="scale-range">38.0 - 50.0</span>
+                        <span class="scale-label">Very High</span>
+                    </div>
+
+                    <div class="scale-item scale-extreme" data-min="50.0" data-max="999">
+                        <span class="scale-range">50.0+</span>
+                        <span class="scale-label">Extreme</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% elif results is not none %}
+        <div class="alert">
+            <h2>⚠️ System Message</h2>
+            <p>{{ results }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Highlight the appropriate FWI danger level
+        document.addEventListener('DOMContentLoaded', function() {
+            const fwiScoreElement = document.getElementById('fwi-score');
+            
+            if (fwiScoreElement) {
+                const fwiScore = parseFloat(fwiScoreElement.textContent);
+                const scaleItems = document.querySelectorAll('.scale-item');
+                
+                scaleItems.forEach(item => {
+                    const min = parseFloat(item.dataset.min);
+                    const max = parseFloat(item.dataset.max);
+                    
+                    if (fwiScore >= min && fwiScore <= max) {
+                        item.classList.add('scale-active');
+                    }
+                });
+            }
+        });
+
+        // Add input validation feedback
+        const inputs = document.querySelectorAll('input[type="number"]');
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.validity.valid) {
+                    this.style.borderColor = 'rgba(16, 185, 129, 0.6)';
+                } else {
+                    this.style.borderColor = 'rgba(239, 68, 68, 0.6)';
+                }
+            });
+
+            input.addEventListener('blur', function() {
+                if (this.value) {
+                    this.style.borderColor = 'rgba(255, 107, 107, 0.25)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

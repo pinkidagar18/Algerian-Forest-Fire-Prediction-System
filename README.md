@@ -322,7 +322,7 @@ The Home page features a modern, nature-inspired design with fire-themed colors 
 ### 2. Prediction Form
 User-friendly form interface with clear input fields, real-time validation, and helpful placeholders for each meteorological parameter.
 
-![Home Page](images/Prediction_page.png)
+![Prediction Page](images/Prediction_page.png)
 
 
 **Features:**
@@ -334,7 +334,7 @@ User-friendly form interface with clear input fields, real-time validation, and 
 ### 3. Prediction Results
 Clean results display showing the calculated Fire Weather Index with risk level interpretation and actionable insights.
 
-![Home Page](images/Result_page.png)
+![Result Page](images/Result_page.png)
 
 **Features:**
 - Large, clear FWI value display
@@ -345,7 +345,7 @@ Clean results display showing the calculated Fire Weather Index with risk level 
 ### 4. System Architecture
 Overview of the application's architecture showing the flow from user input through the ML model to prediction output.
 
-![Home Page](images/04_architecture_page.png)
+![System Architecture](images/04_architecture.png)
 
 **Components:**
 - Web interface layer (HTML/CSS/JS)
@@ -385,7 +385,7 @@ Contributions are welcome! Please follow these steps:
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Distributed under the MIT License. See LICENSE for more information
 
 ## 🙏 Acknowledgments
 
@@ -411,6 +411,7 @@ For questions or feedback, please reach out:
 ---
 
 Made with ❤️ for forest conservation and fire prevention
+
 
 
 

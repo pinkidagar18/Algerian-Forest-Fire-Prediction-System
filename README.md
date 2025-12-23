@@ -216,7 +216,7 @@ algerian-forest-fire-prediction/
 ## 🔌 API Endpoints
 
 ### 1. Home Page
-- **URL**: `/`
+- **URL**: `https://github.com/pinkidagar18/Algerian-Forest-Fire-Prediction-System/blob/3ec67e1c0994629b215af9ea5795041147656810/images/Home_page.png`
 - **Method**: `GET`
 - **Description**: Landing page with project information
 
@@ -410,3 +410,4 @@ For questions or feedback, please reach out:
 ---
 
 Made with ❤️ for forest conservation and fire prevention
+

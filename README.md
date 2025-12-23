@@ -4,20 +4,20 @@ A machine learning-powered web application that predicts the Fire Weather Index 
 
 ## 📋 Table of Contents
 
-- [Overview](#overview)
-- [Features](#features)
-- [Dataset](#dataset)
-- [Model](#model)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [API Endpoints](#api-endpoints)
-- [Input Parameters](#input-parameters)
-- [Technologies Used](#technologies-used)
-- [Screenshots](#screenshots)
-- [Future Improvements](#future-improvements)
-- [Contributing](#contributing)
-- [License](#license)
+- [Overview]
+- [Features]
+- [Dataset]
+- [Model]
+- [Installation]
+- [Usage]
+- [Project Structure]
+- [API Endpoints]
+- [Input Parameters]
+- [Technologies Used]
+- [Screenshots]
+- [Future Improvements]
+- [Contributing]
+- [License]
 
 ## 🌟 Overview
 
@@ -216,7 +216,7 @@ algerian-forest-fire-prediction/
 ## 🔌 API Endpoints
 
 ### 1. Home Page
-- ![Home Page](images/Home_page.png)
+- URL: /
 - **Method**: `GET`
 - **Description**: Landing page with project information
 
@@ -308,10 +308,10 @@ Region = 0
 
 ## 📸 Screenshots
 
-### 1. Landing Page
-The landing page features a modern, nature-inspired design with fire-themed colors and smooth animations, providing an intuitive entry point to the application.
+### 1. Home Page
+The Home page features a modern, nature-inspired design with fire-themed colors and smooth animations, providing an intuitive entry point to the application.
 
-![Landing Page](screenshots/01_landing_page.png)
+![Home Page](images/Home_page.png)
 
 **Features:**
 - Modern dark theme with gradient backgrounds
@@ -322,7 +322,8 @@ The landing page features a modern, nature-inspired design with fire-themed colo
 ### 2. Prediction Form
 User-friendly form interface with clear input fields, real-time validation, and helpful placeholders for each meteorological parameter.
 
-![Prediction Form](screenshots/02_prediction_form.png)
+![Home Page](images/Prediction_page.png)
+
 
 **Features:**
 - 9 input fields for meteorological data
@@ -333,7 +334,7 @@ User-friendly form interface with clear input fields, real-time validation, and 
 ### 3. Prediction Results
 Clean results display showing the calculated Fire Weather Index with risk level interpretation and actionable insights.
 
-![Prediction Result](screenshots/03_prediction_result.png)
+![Home Page](images/Result_page.png)
 
 **Features:**
 - Large, clear FWI value display
@@ -344,7 +345,7 @@ Clean results display showing the calculated Fire Weather Index with risk level 
 ### 4. System Architecture
 Overview of the application's architecture showing the flow from user input through the ML model to prediction output.
 
-![System Architecture](screenshots/04_architecture.png)
+![Home Page](images/04_architecture_page.png)
 
 **Components:**
 - Web interface layer (HTML/CSS/JS)
@@ -410,5 +411,6 @@ For questions or feedback, please reach out:
 ---
 
 Made with ❤️ for forest conservation and fire prevention
+
 
 

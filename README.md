@@ -345,7 +345,7 @@ Clean results display showing the calculated Fire Weather Index with risk level 
 ### 4. System Architecture
 Overview of the application's architecture showing the flow from user input through the ML model to prediction output.
 
-![System Architecture](images/04_architecture.png)
+![Architecture](images/04_architecture.png)
 
 **Components:**
 - Web interface layer (HTML/CSS/JS)
@@ -411,6 +411,7 @@ For questions or feedback, please reach out:
 ---
 
 Made with ❤️ for forest conservation and fire prevention
+
 
 
 

@@ -1,0 +1,20 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8 # Use the Python version your app requires
+    commands:
+      # Install dependencies (CodeBuild does this, EB will also do it)
+      - pip install -r requirements.txt
+  build:
+    commands:
+      - echo Build started on `date`
+      # Any tests or compilation steps go here
+  post_build:
+    commands:
+      - echo Build completed on `date`
+
+artifacts:
+  files:
+    - '**/*' # Package all files in the repository for deployment

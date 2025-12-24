@@ -1,20 +1,15 @@
 version: 0.2
-
 phases:
   install:
     runtime-versions:
-      python: 3.8 # Use the Python version your app requires
+      # CRITICAL: This line must be set to 3.11
+      python: 3.11 
     commands:
-      # Install dependencies (CodeBuild does this, EB will also do it)
+      # Optional, but good practice
       - pip install -r requirements.txt
   build:
     commands:
-      - echo Build started on `date`
-      # Any tests or compilation steps go here
-  post_build:
-    commands:
-      - echo Build completed on `date`
-
+      - echo "Starting packaging the application with Python 3.11..."
 artifacts:
   files:
-    - '**/*' # Package all files in the repository for deployment
+    - '**/*'

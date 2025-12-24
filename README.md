@@ -329,7 +329,7 @@ The landing page features a modern, nature-inspired design with fire-themed colo
 ### 2. Prediction Form
 User-friendly form interface with clear input fields, real-time validation, and helpful placeholders for each meteorological parameter.
 
-![Prediction Form](images_prediction.png)
+![Prediction Form](images/Prediction_page.png)
 
 **Features:**
 - 9 input fields for meteorological data
@@ -340,7 +340,7 @@ User-friendly form interface with clear input fields, real-time validation, and 
 ### 3. Prediction Results
 Clean results display showing the calculated Fire Weather Index with risk level interpretation and actionable insights.
 
-![Prediction Result](images/result_page.png)
+![Prediction Result](images/Result_page.png)
 
 **Features:**
 - Large, clear FWI value display
@@ -578,38 +578,10 @@ fwi_result = max(0, fwi_result)  # Ensure non-negative
 - Apply log transformation to target variable during training
 - Add a ReLU activation: `fwi_result = max(0, fwi_result)`
 
----
-
-#### 8. CSS/JavaScript Not Loading
-
-**Issue**: Styles and scripts not applying to the web pages.
-
-**Cause**: Static files not properly configured or linked.
-
-**Solution**:
-
-If using external CDN (current approach):
-```html
-<!-- Verify CDN links are accessible -->
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-```
-
-If using local files:
-```bash
-# Create static directory
-mkdir -p static/css static/js
-
-# Update Flask configuration
-app = Flask(__name__)
-# Flask automatically serves from 'static' folder
-
-# Reference in HTML
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-```
 
 ---
 
-#### 9. Form Validation Not Working
+#### 8. Form Validation Not Working
 
 **Issue**: Invalid data passes through validation or valid data gets rejected.
 
@@ -687,78 +659,6 @@ models = {
     'Random Forest': RandomForestRegressor(n_estimators=100),
     'Gradient Boosting': GradientBoostingRegressor(n_estimators=100)
 }
-```
-
----
-
-### Development Best Practices Learned
-
-Based on the issues encountered during development, here are key best practices:
-
-#### 1. **Version Control Everything**
-```bash
-# Include a comprehensive requirements.txt with exact versions
-pip freeze > requirements.txt
-
-# Use git to track changes
-git add .
-git commit -m "Add model training notebook"
-```
-
-#### 2. **Logging is Essential**
-```python
-# Add comprehensive logging throughout
-import logging
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-# Log important operations
-logger.info("Loading model...")
-logger.error(f"Error: {str(e)}")
-```
-
-#### 3. **Validate Everything**
-```python
-# Validate inputs at multiple levels:
-# 1. Frontend (HTML5 validation)
-# 2. Backend (Python validation)
-# 3. Before model prediction
-
-def validate_input_data(data):
-    """Comprehensive validation function"""
-    # Check presence
-    # Check types
-    # Check ranges
-    # Return clear error messages
-```
-
-#### 4. **Test Locally Before Deployment**
-```bash
-# Test different scenarios
-curl http://localhost:5000/health
-curl -X POST http://localhost:5000/predictdata -d "Temperature=30&..."
-
-# Test edge cases
-# - Minimum values
-# - Maximum values
-# - Invalid values
-# - Missing values
-```
-
-#### 5. **Document as You Go**
-```python
-# Add docstrings to all functions
-def load_models():
-    """
-    Load the trained Ridge Regression model and StandardScaler.
-    
-    Returns:
-        bool: True if successful, False otherwise.
-        
-    Raises:
-        FileNotFoundError: If model files are not found.
-    """
 ```
 
 ---
@@ -876,3 +776,4 @@ For questions or feedback, please reach out:
 ---
 
 Made with ❤️ for forest conservation and fire prevention
+

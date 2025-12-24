@@ -1,38 +1,25 @@
-<<<<<<< HEAD
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      python: 3.8 # Use the Python version your app requires
+  pre_build:
     commands:
-      # Install dependencies (CodeBuild does this, EB will also do it)
-      - pip install -r requirements.txt
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.eu-north-1.amazonaws.com
+      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.eu-north-1.amazonaws.com/forest-fire-prediction
+      - IMAGE_TAG=latest
+
   build:
     commands:
       - echo Build started on `date`
-      # Any tests or compilation steps go here
+      - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+
   post_build:
     commands:
       - echo Build completed on `date`
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
 
 artifacts:
   files:
-    - '**/*' # Package all files in the repository for deployment
-=======
-version: 0.2
-phases:
-  install:
-    runtime-versions:
-      # CRITICAL: This line must be set to 3.11
-      python: 3.11 
-    commands:
-      # Optional, but good practice
-      - pip install -r requirements.txt
-  build:
-    commands:
-      - echo "Starting packaging the application with Python 3.11..."
-artifacts:
-  files:
     - '**/*'
->>>>>>> c1c98bec3bca497b557543134ccacd7e35077d58
+

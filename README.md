@@ -2,22 +2,29 @@
 
 A machine learning-powered web application that predicts the Fire Weather Index (FWI) for forest fire risk assessment in Algeria using meteorological and environmental data.
 
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
+![Flask](https://img.shields.io/badge/Flask-3.0.0-green)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.3.0-orange)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
 ## 📋 Table of Contents
 
-- [Overview]
-- [Features]
-- [Dataset]
-- [Model]
-- [Installation]
-- [Usage]
-- [Project Structure]
-- [API Endpoints]
-- [Input Parameters]
-- [Technologies Used]
-- [Screenshots]
-- [Future Improvements]
-- [Contributing]
-- [License]
+- [Overview](#overview)
+- [Features](#features)
+- [Dataset](#dataset)
+- [Model](#model)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [API Endpoints](#api-endpoints)
+- [Input Parameters](#input-parameters)
+- [Technologies Used](#technologies-used)
+- [Screenshots](#screenshots)
+- [Troubleshooting](#troubleshooting)
+- [Common Issues & Solutions](#common-issues--solutions)
+- [Future Improvements](#future-improvements)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## 🌟 Overview
 
@@ -216,7 +223,7 @@ algerian-forest-fire-prediction/
 ## 🔌 API Endpoints
 
 ### 1. Home Page
-- URL: /
+- **URL**: `/`
 - **Method**: `GET`
 - **Description**: Landing page with project information
 
@@ -308,10 +315,10 @@ Region = 0
 
 ## 📸 Screenshots
 
-### 1. Home Page
-The Home page features a modern, nature-inspired design with fire-themed colors and smooth animations, providing an intuitive entry point to the application.
+### 1. Landing Page
+The landing page features a modern, nature-inspired design with fire-themed colors and smooth animations, providing an intuitive entry point to the application.
 
-![Home Page](images/Home_page.png)
+![Landing Page](images/Home_page.png)
 
 **Features:**
 - Modern dark theme with gradient backgrounds
@@ -322,8 +329,7 @@ The Home page features a modern, nature-inspired design with fire-themed colors 
 ### 2. Prediction Form
 User-friendly form interface with clear input fields, real-time validation, and helpful placeholders for each meteorological parameter.
 
-![Prediction Page](images/Prediction_page.png)
-
+![Prediction Form](images_prediction.png)
 
 **Features:**
 - 9 input fields for meteorological data
@@ -334,7 +340,7 @@ User-friendly form interface with clear input fields, real-time validation, and 
 ### 3. Prediction Results
 Clean results display showing the calculated Fire Weather Index with risk level interpretation and actionable insights.
 
-![Result Page](images/Result_page.png)
+![Prediction Result](images/result_page.png)
 
 **Features:**
 - Large, clear FWI value display
@@ -345,13 +351,468 @@ Clean results display showing the calculated Fire Weather Index with risk level 
 ### 4. System Architecture
 Overview of the application's architecture showing the flow from user input through the ML model to prediction output.
 
-![Architecture](images/04_architecture.png)
+![System Architecture](images/04_architecture.png)
 
 **Components:**
 - Web interface layer (HTML/CSS/JS)
 - Flask backend API
 - ML prediction engine (Ridge Regression)
 - Data processing pipeline
+
+## 🔧 Troubleshooting
+
+This section documents common issues encountered during development and their solutions to help you avoid the same pitfalls.
+
+### Common Issues & Solutions
+
+#### 1. Model Loading Errors
+
+**Issue**: `FileNotFoundError: [Errno 2] No such file or directory: 'models/ridge.pkl'`
+
+**Cause**: The Flask application expects model files in a `models/` directory, but they're in the root directory or wrong location.
+
+**Solution**:
+```bash
+# Create models directory if it doesn't exist
+mkdir -p models
+
+# Move pickle files to models directory
+mv ridge.pkl models/
+mv scaler.pkl models/
+
+# Verify the structure
+ls -la models/
+```
+
+**Prevention**: Always ensure your project structure matches the code's expectations. The application.py file loads models from:
+```python
+model_paths = {
+    'ridge': 'models/ridge.pkl',
+    'scaler': 'models/scaler.pkl'
+}
+```
+
+---
+
+#### 2. Scikit-learn Version Mismatch
+
+**Issue**: `InconsistentVersionWarning: Trying to unpickle estimator Ridge from version 1.3.0 when using version 1.5.0`
+
+**Cause**: The model was trained with one version of scikit-learn but you're trying to load it with a different version.
+
+**Solutions**:
+
+**Option 1 - Match the training version** (Recommended):
+```bash
+pip install scikit-learn==1.3.0 --break-system-packages
+```
+
+**Option 2 - Retrain the model**:
+```python
+# Run the Model_Training.ipynb notebook again
+# This will create new pickle files compatible with your current version
+```
+
+**Option 3 - Ignore the warning** (Not recommended for production):
+```python
+import warnings
+warnings.filterwarnings('ignore', category=UserWarning)
+```
+
+**Best Practice**: Document the exact versions used during training in requirements.txt:
+```
+scikit-learn==1.3.0
+numpy==1.26.0
+pandas==2.1.0
+```
+
+---
+
+#### 3. Template Not Found Error
+
+**Issue**: `jinja2.exceptions.TemplateNotFound: index.html`
+
+**Cause**: Flask can't find the HTML template files.
+
+**Solution**:
+```bash
+# Ensure templates directory exists
+mkdir -p templates
+
+# Move HTML files to templates directory
+mv index.html templates/
+mv home.html templates/
+
+# Verify structure
+tree .
+# Expected:
+# .
+# ├── application.py
+# ├── models/
+# │   ├── ridge.pkl
+# │   └── scaler.pkl
+# └── templates/
+#     ├── index.html
+#     └── home.html
+```
+
+**Flask Convention**: Flask automatically looks for templates in a `templates/` folder in the same directory as your application.
+
+---
+
+#### 4. Input Data Shape Mismatch
+
+**Issue**: `ValueError: X has 8 features, but StandardScaler is expecting 9 features`
+
+**Cause**: The number of input features doesn't match what the model was trained on.
+
+**Root Causes**:
+- Missing a form field in HTML
+- Incorrect order of features
+- Forgot to include a feature in the prediction array
+
+**Solution**:
+```python
+# Ensure ALL 9 features are included in the CORRECT ORDER:
+# Temperature, RH, Ws, Rain, FFMC, DMC, ISI, Classes, Region
+
+input_data = np.array([[
+    Temperature,  # Feature 1
+    RH,          # Feature 2
+    Ws,          # Feature 3
+    Rain,        # Feature 4
+    FFMC,        # Feature 5
+    DMC,         # Feature 6
+    ISI,         # Feature 7
+    Classes,     # Feature 8
+    Region       # Feature 9
+]])
+```
+
+**Debugging Tip**:
+```python
+# Add this to check your input shape
+print(f"Input shape: {input_data.shape}")  # Should be (1, 9)
+print(f"Expected features: {standard_scaler.n_features_in_}")
+```
+
+---
+
+#### 5. Flask Not Running / Import Errors
+
+**Issue**: `ModuleNotFoundError: No module named 'flask'`
+
+**Cause**: Flask or other dependencies not installed in the current environment.
+
+**Solution**:
+```bash
+# Activate your virtual environment first
+source venv/bin/activate  # On Linux/Mac
+# OR
+venv\Scripts\activate  # On Windows
+
+# Install all dependencies
+pip install -r requirements.txt
+
+# Verify installation
+pip list | grep -i flask
+```
+
+**If still having issues**:
+```bash
+# Clear pip cache and reinstall
+pip cache purge
+pip install --no-cache-dir -r requirements.txt
+```
+
+---
+
+#### 6. Port Already in Use
+
+**Issue**: `OSError: [Errno 48] Address already in use`
+
+**Cause**: Another process is already using port 5000.
+
+**Solution**:
+
+**Option 1 - Kill the process using port 5000**:
+```bash
+# Find the process
+lsof -i :5000
+# OR on Windows
+netstat -ano | findstr :5000
+
+# Kill it (Linux/Mac)
+kill -9 <PID>
+
+# Kill it (Windows)
+taskkill /PID <PID> /F
+```
+
+**Option 2 - Use a different port**:
+```bash
+# Set environment variable
+export FLASK_PORT=5001
+
+# Or modify application.py
+app.run(host='0.0.0.0', port=5001)
+```
+
+---
+
+#### 7. Negative FWI Predictions
+
+**Issue**: Model sometimes predicts negative FWI values, which don't make sense.
+
+**Cause**: Ridge Regression can predict negative values, but FWI should be ≥ 0.
+
+**Solution** (Already implemented):
+```python
+# In application.py
+fwi_result = float(prediction[0])
+fwi_result = max(0, fwi_result)  # Ensure non-negative
+```
+
+**Alternative Solutions**:
+- Use a different model (Random Forest, Gradient Boosting)
+- Apply log transformation to target variable during training
+- Add a ReLU activation: `fwi_result = max(0, fwi_result)`
+
+---
+
+#### 8. CSS/JavaScript Not Loading
+
+**Issue**: Styles and scripts not applying to the web pages.
+
+**Cause**: Static files not properly configured or linked.
+
+**Solution**:
+
+If using external CDN (current approach):
+```html
+<!-- Verify CDN links are accessible -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+```
+
+If using local files:
+```bash
+# Create static directory
+mkdir -p static/css static/js
+
+# Update Flask configuration
+app = Flask(__name__)
+# Flask automatically serves from 'static' folder
+
+# Reference in HTML
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+```
+
+---
+
+#### 9. Form Validation Not Working
+
+**Issue**: Invalid data passes through validation or valid data gets rejected.
+
+**Cause**: Validation ranges too strict or form values not being converted properly.
+
+**Solution**:
+```python
+# Ensure proper type conversion before validation
+try:
+    Temperature = float(request.form.get('Temperature'))
+except (ValueError, TypeError):
+    return render_template('home.html', 
+                         results="Invalid temperature value", 
+                         fwi_result=None)
+
+# Check validation ranges match your dataset
+validations = {
+    'Temperature': (0, 60),    # Adjust based on your data
+    'RH': (0, 100),
+    'Ws': (0, 200),
+    # ... etc
+}
+```
+
+**Debugging Tip**:
+```python
+# Log all form values for debugging
+logger.info(f"Received form data: {request.form.to_dict()}")
+```
+
+---
+
+#### 10. Model Accuracy Issues
+
+**Issue**: Predictions seem inaccurate or inconsistent.
+
+**Possible Causes & Solutions**:
+
+**1. Data Quality Issues**:
+```python
+# Check for outliers in training data
+df.describe()
+df.boxplot()
+
+# Handle outliers
+from scipy import stats
+z_scores = np.abs(stats.zscore(df.select_dtypes(include=[np.number])))
+df_clean = df[(z_scores < 3).all(axis=1)]
+```
+
+**2. Feature Scaling Issues**:
+```python
+# Ensure you're scaling test data with the SAME scaler used in training
+# DON'T create a new scaler for prediction
+# DO use the saved scaler
+input_scaled = standard_scaler.transform(input_data)  # ✓ Correct
+```
+
+**3. Missing Feature Engineering**:
+```python
+# Consider adding interaction features
+df['temp_humidity_interaction'] = df['Temperature'] * df['RH']
+df['wind_rain_interaction'] = df['Ws'] * df['Rain']
+```
+
+**4. Model Selection**:
+```python
+# Try different models
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
+from sklearn.linear_model import Lasso, ElasticNet
+
+# Compare performance
+models = {
+    'Ridge': Ridge(alpha=1.0),
+    'Random Forest': RandomForestRegressor(n_estimators=100),
+    'Gradient Boosting': GradientBoostingRegressor(n_estimators=100)
+}
+```
+
+---
+
+### Development Best Practices Learned
+
+Based on the issues encountered during development, here are key best practices:
+
+#### 1. **Version Control Everything**
+```bash
+# Include a comprehensive requirements.txt with exact versions
+pip freeze > requirements.txt
+
+# Use git to track changes
+git add .
+git commit -m "Add model training notebook"
+```
+
+#### 2. **Logging is Essential**
+```python
+# Add comprehensive logging throughout
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Log important operations
+logger.info("Loading model...")
+logger.error(f"Error: {str(e)}")
+```
+
+#### 3. **Validate Everything**
+```python
+# Validate inputs at multiple levels:
+# 1. Frontend (HTML5 validation)
+# 2. Backend (Python validation)
+# 3. Before model prediction
+
+def validate_input_data(data):
+    """Comprehensive validation function"""
+    # Check presence
+    # Check types
+    # Check ranges
+    # Return clear error messages
+```
+
+#### 4. **Test Locally Before Deployment**
+```bash
+# Test different scenarios
+curl http://localhost:5000/health
+curl -X POST http://localhost:5000/predictdata -d "Temperature=30&..."
+
+# Test edge cases
+# - Minimum values
+# - Maximum values
+# - Invalid values
+# - Missing values
+```
+
+#### 5. **Document as You Go**
+```python
+# Add docstrings to all functions
+def load_models():
+    """
+    Load the trained Ridge Regression model and StandardScaler.
+    
+    Returns:
+        bool: True if successful, False otherwise.
+        
+    Raises:
+        FileNotFoundError: If model files are not found.
+    """
+```
+
+---
+
+### Debugging Tools & Commands
+
+Useful commands for troubleshooting:
+
+```bash
+# Check Python version
+python --version
+
+# Check installed packages
+pip list
+
+# Check if Flask is running
+ps aux | grep python
+
+# Check network/port
+netstat -an | grep 5000
+lsof -i :5000
+
+# Test application health
+curl http://localhost:5000/health
+
+# View application logs (if using systemd)
+journalctl -u forest-fire-app -f
+
+# Check file permissions
+ls -la models/
+ls -la templates/
+
+# Verify pickle files
+python -c "import pickle; print(pickle.load(open('models/ridge.pkl', 'rb')))"
+```
+
+---
+
+### Getting Help
+
+If you encounter issues not covered here:
+
+1. **Check the logs**: Look at application.log or console output
+2. **Enable debug mode**: Set `FLASK_DEBUG=True` for detailed error messages
+3. **Verify environment**: Check all dependencies are installed
+4. **Search issues**: Look at GitHub issues for similar problems
+5. **Create an issue**: Provide:
+   - Error message
+   - Steps to reproduce
+   - Python version
+   - Operating system
+   - Relevant logs
+
+---
 
 ## 🔮 Future Improvements
 
@@ -385,20 +846,24 @@ Contributions are welcome! Please follow these steps:
 
 ## 📄 License
 
-Distributed under the MIT License. See LICENSE for more information
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Authors
+
+- **Pinki** 
 
 ## 🙏 Acknowledgments
 
 - Algerian Forest Fire Dataset contributors
 - Flask and Scikit-learn communities
 - Open source contributors
+- Stack Overflow community for troubleshooting help
 
 ## 📧 Contact
 
 For questions or feedback, please reach out:
 
-- Email: pinkidagar18@gmail.com
----
+- **Email**: pinkidagar18@gmail.com
 
 **Note**: This project is for educational and research purposes. Always consult professional fire management agencies for actual fire risk assessments.
 
@@ -411,8 +876,3 @@ For questions or feedback, please reach out:
 ---
 
 Made with ❤️ for forest conservation and fire prevention
-
-
-
-
-

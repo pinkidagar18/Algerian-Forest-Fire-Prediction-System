@@ -96,8 +96,7 @@ Ridge Regression was selected after evaluating multiple regression algorithms du
 ### Performance Metrics:
 
 - Model evaluation metrics are available in the `Model_Training.ipynb` notebook
-- Comprehensive analysis including R², MAE, and RMSE
-- 
+- Comprehensive analysis including R², MAE, and RMSE 
 ### System Architecture
 Overview of the application's architecture showing the flow from user input through the ML model to prediction output.
 
@@ -776,6 +775,7 @@ For questions or feedback, please reach out:
 ---
 
 Made with ❤️ for forest conservation and fire prevention
+
 
 
 

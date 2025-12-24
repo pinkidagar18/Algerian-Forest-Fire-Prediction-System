@@ -13,7 +13,6 @@ A machine learning-powered web application that predicts the Fire Weather Index 
 - [Features](#features)
 - [Dataset](#dataset)
 - [Model](#model)
-- [System Architecture](#system architecture)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
@@ -98,16 +97,8 @@ Ridge Regression was selected after evaluating multiple regression algorithms du
 
 - Model evaluation metrics are available in the `Model_Training.ipynb` notebook
 - Comprehensive analysis including R², MAE, and RMSE
-
-## 🚀 Installation
-
-### Prerequisites
-
-- Python 3.8 or higher
-- pip (Python package manager)
-- Virtual environment (recommended)
-
-### 4. System Architecture
+- 
+### System Architecture
 Overview of the application's architecture showing the flow from user input through the ML model to prediction output.
 
 ![System Architecture](images/system_arch.png)
@@ -117,6 +108,14 @@ Overview of the application's architecture showing the flow from user input thro
 - Flask backend API
 - ML prediction engine (Ridge Regression)
 - Data processing pipeline
+
+## 🚀 Installation
+
+### Prerequisites
+
+- Python 3.8 or higher
+- pip (Python package manager)
+- Virtual environment (recommended)
 
 ### Step-by-Step Installation
 
@@ -777,5 +776,6 @@ For questions or feedback, please reach out:
 ---
 
 Made with ❤️ for forest conservation and fire prevention
+
 
 

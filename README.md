@@ -1,11 +1,11 @@
 ---
-title: Algerian Forest Fire Prediction
-emoji: 🌲
+title: Algerian Forest Fire Prediction System
+emoji: 🔥
 colorFrom: green
 colorTo: yellow
 sdk: docker
 pinned: false
-license: mit
+license: apache-2.0
 ---
 
 # 🔥 Algerian Forest Fire Prediction System

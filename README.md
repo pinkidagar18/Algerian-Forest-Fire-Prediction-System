@@ -1,3 +1,13 @@
+---
+title: Algerian Forest Fire Prediction System
+emoji: 🔥
+colorFrom: green
+colorTo: yellow
+sdk: docker
+pinned: false
+license: apache-2.0
+---
+
 # 🔥 Algerian Forest Fire Prediction System
 
 A machine learning-powered web application that predicts the Fire Weather Index (FWI) for forest fire risk assessment in Algeria using meteorological and environmental data.
@@ -777,15 +787,5 @@ For questions or feedback, please reach out:
 
 Made with ❤️ for forest conservation and fire prevention
 
-
----
-title: Algerian Forest Fire Prediction System
-emoji: 🔥
-colorFrom: green
-colorTo: yellow
-sdk: docker
-pinned: false
-license: apache-2.0
----
 
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
